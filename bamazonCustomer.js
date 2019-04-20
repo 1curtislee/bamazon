@@ -1,16 +1,9 @@
 var mysql = require("mysql");
-var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
   host: "localhost",
-
-  // Your port; if not 3306
   port: 3306,
-
-  // Your username
   user: "webuser",
-
-  // Your password
   password: "ucr",
   database: "bamazon"
 });
@@ -18,52 +11,50 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
-  
-  // COMMAND:
-  placeOrder();
-  
+  checkStock();
 });
 
-// display all items
+// orders are placed using command line arguments:
 var orderProductID = process.argv[2];
 var orderQuantity = process.argv[3];
 
-/*
-inquirer
-.prompt(["please enter a product ID"])
-.then(function(response) {
-});
-*/
+function checkStock() {
+  connection.query(
+    "SELECT stock_quantity FROM products WHERE item_id = " + orderProductID,
+    function(err, res) {
+      var stockQuantity = res[0].stock_quantity
+      if (orderQuantity > stockQuantity) {
+        console.log("product ID: " + orderProductID + ", not enough stock!");
+        connection.end();
+      } else {
+        console.log("Product ID: " + orderProductID + "\n");
+        console.log("Quantity Ordered: " + orderQuantity + "\n");
+        placeOrder();
+      }
+    }
+  );
+};
 
 function placeOrder() {
-  // prompt productID and quantity:
-  console.log("Product ID: " + orderProductID + "\n");
-  console.log("Quantity Ordered: " + orderQuantity + "\n");
-
-  // check stock:
-
- 
-  // process order:
   console.log("placing order...\n");
   connection.query(
     "UPDATE products SET stock_quantity = stock_quantity - " + orderQuantity + " WHERE item_id = " + orderProductID,
     function(err, res) {
-      //console.log(res.affectedRows + " product(s) ordered!\n");
+      console.log("order placed!");
     }
   );
-  //display price;
   readProducts();
-
 };
 
 function readProducts() {
-  console.log("order placed.");
-  /*
-  connection.query("SELECT * FROM products", 
+  console.log("You ordered " + orderQuantity + ", product ID: " + orderProductID)
+  
+  connection.query("SELECT price FROM products WHERE item_id = " + orderProductID, 
   function(err, res) {
     if (err) throw err;
-    console.log(res);
+    var total = res[0].price * orderQuantity;
+    console.log("order total: " + total);
   });
-  */
+  
   connection.end();
 }
