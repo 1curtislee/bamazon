@@ -1,4 +1,6 @@
 # Bamazon
+video example:
+https://drive.google.com/open?id=182dz10SO8B_TQSImY8xc5fhtX7jV6X8D
 
 ### Bamazon is a simple database application that updates stock quantity based on user input. 
 
