@@ -55,6 +55,5 @@ function readProducts() {
     var total = res[0].price * orderQuantity;
     console.log("order total: " + total);
   });
-  
   connection.end();
 }
