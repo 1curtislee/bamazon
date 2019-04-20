@@ -6,4 +6,5 @@ Using node.js to run the bamazonCustomer.js file uses process.argv[2] as the ite
 
 ## Example command:
 `node bamazonCustomer 1 12`
+
 this orders 12 products whose item id is 1.
