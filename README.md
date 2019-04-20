@@ -10,4 +10,6 @@ Use node.js to run the bamazonCustomer.js file. `process.argv[2]` is the item ID
 
 this orders 12 products whose item id is 1.
 
+## Bamazon Demo
+Click to see the application in action!
 [video demo](https://drive.google.com/open?id=182dz10SO8B_TQSImY8xc5fhtX7jV6X8D)
